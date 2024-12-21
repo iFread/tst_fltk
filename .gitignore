@@ -1,0 +1,9 @@
+build
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles
+CMakeLists.txt.user
+Makefile
+lib/CMakeFiles
+lib/cmake_install.cmake
+lib/Makefile

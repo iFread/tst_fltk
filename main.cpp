@@ -71,8 +71,8 @@ void tst_graph()
     using  namespace Graph ;
     main_window w(Point(100,100),800,600,"test");
 
-
-    gui_run();
+gui_run();
+   // gui_run();
 
 
 }

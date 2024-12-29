@@ -99,12 +99,14 @@ public:
         zapf_dingbats=FL_ZAPF_DINGBATS
     };
 
-    Font(Font_type ff) :f(ff) { }
-    Font(int ff) :f(ff) { }
+    Font(Font_type ff,int fz=12) :f(ff),sz(fz) { }
+    Font(int ff,int fz=12) :f(ff),sz(fz) { }
 
     int as_int() const { return f; }
+    int fontsize() const{return sz;}
 private:
     int f;
+    int sz;
 };
 
 }

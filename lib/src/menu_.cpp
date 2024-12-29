@@ -8,7 +8,7 @@ void menu_:: add( Core::base_* it)
 {
  // здесь возможна проверка вертикально/горизонтально
 l.push_back(it);
- if(w_<(it->name().size()*sym_w))
+ if(w_<(static_cast<int>(it->name().size())*sym_w))
      w_=it->name().size()*sym_w;
  h_= l.size()*sym_h +(l.size()+1)*mrg;
  resize(w_,h_);
@@ -21,18 +21,27 @@ void menu_::draw()
 
     fl_rect(loc.x(),loc.y(),w_+2*mrg,h_+mrg, FL_RED);
   Point nxt={loc.x(),loc.y()};
-    for(auto it=l.cbegin(),e=l.cend();it!=e;++it)
+ auto sl= l.find(select_elem);
+    for(auto it=l.begin(),e=l.end();it!=e;++it)
     {
 
     // fl_draw((*it).name().c_str(),nxt.x(),nxt.y());
-    draw(nxt, *it );
+
+      if(*sl &&(*it==*sl))
+          draw(nxt, **it,Color::blue );
+      else
+          draw(nxt,**it);
         nxt= {nxt.x(),nxt.y()+sym_h+mrg};
+
     }
 }
 
-void menu_::draw(Point o,Core::base_&b)
+void menu_::draw(Point o, Core::base_&b, Color c)
 {
- fl_rectf(o.x(),o.y()+mrg,w_+2*mrg ,sym_h  , Color::blue);
+
+     fl_rectf(o.x(),o.y()+mrg,w_+2*mrg ,sym_h+ mrg,c.as_int());
+
+// fl_rectf(o.x(),o.y()+mrg,w_+2*mrg ,sym_h);
  fl_color(Color(Color::black).as_int());
  fl_draw(b.name().c_str(),o.x()+mrg,o.y()+sym_h+mrg);
 }
@@ -48,7 +57,7 @@ int menu_::handle(int ev)
     /*
     если сохранять точку (значение по Y) текущего элемента
      и при движении мыши проверять разницу от сохраненной точки
-     до текущего курсора, если разница больше sym_h+ mrg,
+     до текущего курсора, если разница больше sym_h/2+ mrg,
       выполнять новый поиск элемента
 
     */
@@ -56,14 +65,37 @@ int menu_::handle(int ev)
     {
     case FL_MOVE:
  {
-        int c=find_item();
+     int cnt=Fl::event_y();
 
-    }      break;
+     if(_cnt_pos_<0||std::abs(_cnt_pos_-cnt)>(sym_h/2+mrg))
+       { _cnt_pos_=find_item(cnt);
 
-     case FL_LEAVE:
+     pw->redraw();
+    } }  break;
+
+
+
+     case FL_PUSH:
+
+      switch (Fl::event_button())
+      {
+       case FL_LEFT_MOUSE:
+
+         if(select_elem)
+             select_elem->callback();
+          break;
+        case FL_RIGHT_MOUSE:
+          break;
+
+      }
 
         break;
+    case FL_LEAVE:
 
+     _cnt_pos_=-1;
+     select_elem=nullptr;
+ pw->redraw();
+       break;
     }
 
 
@@ -73,18 +105,18 @@ int menu_::handle(int ev)
 }
 
 
-int menu_::find_item() const
+int menu_::find_item(int pos)
 {
-   // int x_=Fl::event_x();
-    int y_=Fl::event_y();
 
   int nxt_h=loc.y() ;
 
    for(auto bg=l.cbegin(),end=l.cend() ;bg!=end;++bg)
    {
-    if(y_>nxt_h && y_<nxt_h+sym_h+2*mrg)
+    if(pos>nxt_h && pos<nxt_h+sym_h+2*mrg)
        {
-        std::cout<<"name : "<<(*bg).name()<<"\n";
+
+        std::cout<<"name : "<<(*bg)->name()<<"\n";
+       select_elem=*bg;
         return nxt_h+mrg+sym_h/2 ; // середина элемента
     }
         // на каждой итерации прибавляем размеры элемента+отступ
@@ -93,6 +125,16 @@ int menu_::find_item() const
    }
    return -1;
 
+}
+void menu_::clear()
+{  for(auto e=l.begin();e!=l.end();)
+    {
+    Core::base_* del= *e;
+    e=l.remove(e);
+    delete del;
+ }
+    select_elem=nullptr;
+    l.clear();
 }
 
 }

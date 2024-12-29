@@ -9,7 +9,7 @@ window::window(Point p,int w,int h,const char*s):Fl_Window(p.x(),p.y(),w,h,s),w_
   init();
 }
 
-void window::init(){
+ void window::init(){
    resizable(this);
    show();
 
@@ -24,7 +24,7 @@ wid.clear();
     // w->~Widget();
         delete w;
    }
-    hide();
+   hide();
   // std::cout<<"window dtor coll\n";
 }
 
@@ -129,7 +129,7 @@ int window::handle(int e){
 
   Fl_Group::handle(e);
  //redraw();
-  return 0;
+  return 1;
 
 }
 

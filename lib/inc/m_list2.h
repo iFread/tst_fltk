@@ -57,7 +57,10 @@ if(n->nxt_) // если была последующая Node
 //Tp* operator*(){return tp_;}
 
 
-    
+ bool operator==(const Node<Tp*> other){
+
+     return tp_==other.tp_;
+ }
  
   Tp* tp_;
   Node* nxt_;
@@ -131,7 +134,78 @@ private:
     Node<Iter>* it_; 
 };
 
+// ***********************************
+// специализация для указателя
+template<typename Iter>
+class Iterator<Iter*>: public std::iterator <std::bidirectional_iterator_tag
+        ,Iter >
+{
+public:
+    using value_type=Iter*;
+    using difference_type= ptrdiff_t;
+    using pointer_t=Iter**;
+    using reference =T*&;
 
+   typedef std::bidirectional_iterator_tag iterator_category;
+
+
+private:
+    Node<Iter*> *it_; // it_ --здесь указаьель
+public:
+
+    Iterator(Node<value_type>* f):it_(f){}
+
+
+    Iterator operator++()
+    {
+        if(it_)
+            it_=it_->nxt_;
+         return *this;//Iterator(it_++);
+    }
+
+    Iterator operator--()
+    {if(it_)
+         it_=it_->prv_;
+        return *this;
+
+    }
+    value_type operator*()
+    {
+        if(it_)
+           return it_->data();
+        return  nullptr;
+    }
+
+    bool operator!=(const Iterator& it) const
+    {
+      return  !(it.it_==it_); //
+   }
+
+    bool operator==(const Iterator& it) const
+    {
+        return it_==it.it_;
+    }
+    bool _remove()
+    {
+      if(!it_) return false;
+
+      // если есть предыдущий
+      // то 1 -его nxt_ = к it_->nxt_; И it_->nxt_->prv_=it_->prv_;
+      Node<Iter*>* dl_=it_;
+        it_=it_->nxt_;
+
+      if(dl_->prv_)
+       dl_->prv_->nxt_= it_;   //dl_->nxt_;
+
+      if(it_)
+          it_->prv_=dl_->prv_;
+
+
+     delete dl_;
+      return true;
+    }
+
+};
 
 
 public:
@@ -228,10 +302,19 @@ void insert( Iterator<T> it,const T& t)
 Iterator <T> find(const T& t)
 {
     Node<T> *tmp=first_;
-   while(tmp && (*tmp->data()!= t))
+   while(tmp && (tmp->data()!= t))
 {
   tmp=tmp->nxt_;     
 }  return Iterator<T>(tmp);
+}
+
+
+Iterator<T*> find(const T* t)
+{
+  Node<T*>* tmp=first_;
+    while(tmp &&(tmp->data()!=t))
+        tmp=tmp->nxt_;
+    return Iterator<T*>(tmp);
 }
 // возвращает iterator на следующую Node
 Iterator<T> remove(Iterator<T> it)
@@ -245,6 +328,9 @@ Iterator<T> remove(Iterator<T> it)
 
     return it;
 }
+
+
+
 
 Iterator<T> begin(){return Iterator<T>(first_);}
 Iterator<T> end() {return Iterator<T>(nullptr);}

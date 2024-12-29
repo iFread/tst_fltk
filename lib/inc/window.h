@@ -37,7 +37,7 @@ public:
     window(Point p,int w,int h,const char* s);
 void draw()override;
 virtual ~window() ;
-void init();
+virtual void init();
  int& w(){return w_;}
  int& h(){return h_;}
 int w()const {return w_;}
@@ -70,7 +70,9 @@ void detach(Widget &w);
 void resize(int x,int y,int w,int h);
 void detach(Shape& sh);
 void detach(Shape&& sh); // сравнение sh
-void hide() {Fl_Window::hide();}
+   void hide()override { //  static_cast<Fl_Window*>(this)->hide();
+    Fl_Window::hide();
+  }
 
 };
 

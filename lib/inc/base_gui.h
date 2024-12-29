@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include "simple_item.h"
+#include "gui_attributes.h"
+
  //#include "window.h"
 namespace Graph {
 
@@ -81,6 +83,7 @@ public:
 // this class on creating set Fl_Widget::user_data  how Widget*
 class Label:public Widget
 {
+   //  Font f_{}
 public:
     Label(Point p,int w,int h,const std::string &s=""):Widget(p,w,h,s){}
 protected:
@@ -89,6 +92,10 @@ protected:
 private:
     void callback(Callback ,Address ){}
 };
+
+
+
+
 class Empty:public Widget
 {
 
@@ -112,7 +119,37 @@ protected:
 
 };
 
+class Label2:public Empty
+{
 
+    Font f_{Font::Font_type::times,14};
+    Color cl{Color::black};
+    Color bg{Color::grey};
+// std::string txt_;
+public:
+ Label2(Point o,int w,int h,const std::string& cnt=""):Empty(o,w,h,cnt){}
+  void draw();
+     // деймтвий пока нет, хотя возможно выделение текста, и открытие меню
+  int handle(int e){return e;}
+  void text(const std::string &s ){ pw->label(s.c_str());
+                                   resize(s.size()*f_.fontsize(),f_.fontsize());
+                                  //position((s.size()*f_.fontsize())/2)
+                                  }
+  void font(Font f=Font{Font::times,14},Color c=Color(Color::black)){f_=f;cl=c;}
+  void backgroung(Color c=Color::grey){bg=c;}
+  std::string text()const{return std::string(pw->label());}
+
+  ~Label2(){}
+};
+// Label - унаследовать от Empty, с возможностью выбора шрифта,цвета (как текста так и фона), и выравнивания текста
+// по центру, левому или правому краю,( возможно заданию отступа от края),
+//а Text_edit будет представлять list<Label*>, где каждому, отдельному полю можно задать
+// основные параметры, кроме фона,
+class Text_edit:public Empty
+{
+
+
+};
 
 class Button:public Widget{
 public:

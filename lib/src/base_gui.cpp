@@ -97,8 +97,23 @@ Widget& Empty::create()
 {
     return  (*this);
 }
+// **************************************
+// Label2
+
+void Label2::draw()
+{
+    Font old=Font(fl_font(),fl_size());
+   Color cold=fl_color();
+ fl_rectf(loc.x(),loc.y(),w(),h(),bg.as_int());
+ fl_color(cl.as_int());
+ fl_font(f_.as_int(),fl_size());
+ fl_draw(pw->label(),loc.x(),loc.y());
+fl_color(cold.as_int());
+fl_font(old.as_int(),old.fontsize());
+}
 
 
+  // button
 //***************************
 
 void Button::create(Point x,int w,int h)

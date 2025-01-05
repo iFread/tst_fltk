@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wpedantic -pedantic-errors -Wall -O0  -g ")
 
-include_directories("${PROJECT_SOURCE_DIR}/inc")
- include_directories("${PROJECT_SOURCE_DIR}/lib/inc")
+ include_directories("${PROJECT_SOURCE_DIR}/inc")
+# include_directories("${PROJECT_SOURCE_DIR}/lib/inc")
  
 
  file(GLOB CPP1 "${PROJECT_SOURCE_DIR}/src/*.cpp")
@@ -15,8 +15,8 @@ include_directories("${PROJECT_SOURCE_DIR}/inc")
   file(GLOB CHP1 "${PROJECT_SOURCE_DIR}/inc/*.h")
  file(GLOB HPP2 "${PROJECT_SOURCE_DIR}/lib/**/*.h")
 
- add_executable(${PROJECT_NAME} main.cpp ${CPP1} ${CHP1} ${HPP2} )
- 
+ add_executable(${PROJECT_NAME} main.cpp ${CPP1} ${CHP1} )
+ #${HPP2}
 # target_include_directories(${PROJECT_NAME} PUBLIC
  #                         "${PROJECT_SOURCE_DIR}/lib/inc")
  add_subdirectory(lib)

@@ -3,13 +3,18 @@
 #include <iostream>
 #include "m_tuple.h"
 #include "cb_item.h"
+#include "m_list2.h"
+#include <initializer_list>
+
+#include "base_gui.h"
 
 #include <utility>
-
-
+using namespace Containers;
+//using namespace Graph;
 namespace  Core
 {
-using namespace Containers;
+
+
 // callback -part
 // часть хранящая callback
 // предполагаем, что callback не возвращает ничего в вызывающую функцию
@@ -58,7 +63,7 @@ item(const std::string &s,T &t,void(T::*f)(Arg...),Arg...a):base_(s),cb_(make_cb
    cb_=make_cb(t,f,a...);
  }
 
-    void callback(){
+    void callback() override {
         if(cb_)
              cb_->callback();
     }
@@ -72,6 +77,30 @@ item(const std::string &s,T &t,void(T::*f)(Arg...),Arg...a):base_(s),cb_(make_cb
 
 
 };
+
+ // наследуемся от base
+// callback у sub_menu - делаем видимым виджет
+}
+
+
+
+//class  menu_;
+
+namespace Core {
+//using  namespace Graph2;
+
+
+class sub_menu: public base_
+{
+  list2<Core::base_*> l_;
+
+
+public:
+  sub_menu(const std::string &n,const std::initializer_list<Core::base_*> & ll):base_(n),l_(ll)
+  { }
+protected:
+
+     };
 
 }
 

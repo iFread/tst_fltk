@@ -21,6 +21,7 @@ void base_modal::init(){
     attach(bn_ok);
     attach(bn_cncl);
     attach(lb_);
+    lb_.backgroung(Color::dark_cyan);
     show();
 
 

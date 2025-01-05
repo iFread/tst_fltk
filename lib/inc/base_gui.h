@@ -67,6 +67,8 @@ public:
  void set_position(Point x){loc=x;if(pw)pw->position(loc.x(),loc.y());}
   void callback(Callback,Address);
 
+  void draw_text(Point p, const char *s, Font f=Font(Font::times,12), Color c=Color::black);
+
   // virtual int handle(int e) {return pw->handle(e);}
 
    virtual void create(Point p,int w,int h)=0;

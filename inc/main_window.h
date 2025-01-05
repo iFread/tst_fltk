@@ -12,16 +12,14 @@ namespace Graph {
 
 class main_window:public window
 {
-Graph2::menu_ m_;
+    Graph2::menu_ *m_{nullptr};
 
 
 public:
-main_window(Point o,int w,int h,const std::string& s=""):window(o,w,h,s.c_str()),
-    m_(Point(20,20),{new Core::item<main_window>("new file",*this,&main_window::create),
-                     new Core::item<main_window>("open",*this,&main_window::open),
-                    new Core::item<window>("quit",*this,&window::hide)})
+main_window(Point o,int w,int h,const std::string& s=""):window(o,w,h,s.c_str())
+
 {
- attach(m_);
+ //attach(m_);
  std::cout<<"create main_window \n";
 }
 
@@ -46,6 +44,18 @@ void open(){
 
 }
 
+int handle(int e);
+
+
+// как вариант
+    // void create_menu(Point o,Widget&w) // или унаследованный от Widget класс, с виртуальной функцией\
+virtual Graph2::menu_* create_menu(Point); //
+// таким образом виджет меню , будет формироваться нужным классом, и должен отображаться поверх остальных \
+виджетов, в этом случае события должны быть перехвачены классом menu_
+Graph2::menu_* create_menu(Point o);
+
+
+
 void create()
 {
   std::cout<<"create new file...\n";
@@ -53,8 +63,8 @@ void create()
 
 
 ~main_window(){
-    m_.clear();
-     detach(m_);
+  if(m_)  m_->clear();
+     detach(*m_);
              }
 };
 }

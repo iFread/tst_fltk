@@ -66,6 +66,19 @@ void Widget:: create(Point p,int w,int h)
     loc=p;w_=w;h_=h;
   //  pw=new Fl_Box(loc.x(),loc.y(),w_,h_);
 }
+
+void Widget::draw_text(Point p,const char*s,Font f,Color c)
+{
+    Font old=Font(fl_font(),fl_size());
+   Color cold=fl_color();
+   fl_color(c.as_int());
+   fl_font(f.as_int(),f.fontsize());
+   fl_draw(s,p.x(),p.y()+f.fontsize());
+  fl_color(cold.as_int());
+  fl_font(old.as_int(),old.fontsize());
+}
+
+
 //***********************Label
 
 void Label::create(Point p,int w,int h)
@@ -101,13 +114,13 @@ Widget& Empty::create()
 // Label2
 
 void Label2::draw()
-{
+{//fl_font(0, 0);
     Font old=Font(fl_font(),fl_size());
    Color cold=fl_color();
  fl_rectf(loc.x(),loc.y(),w(),h(),bg.as_int());
  fl_color(cl.as_int());
  fl_font(f_.as_int(),fl_size());
- fl_draw(pw->label(),loc.x(),loc.y());
+ fl_draw(pw->label(),loc.x(),loc.y()+f_.fontsize());
 fl_color(cold.as_int());
 fl_font(old.as_int(),old.fontsize());
 }

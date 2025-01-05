@@ -60,7 +60,7 @@ int h() const{return h_;}
 // set Widget w,to which next event "event" will be send
 void set_active(Widget &w, int event);
 
-int handle(int e);
+int handle(int e) override;
 void attach  ( Widget &&N);
 void attach (Widget& sh);
 

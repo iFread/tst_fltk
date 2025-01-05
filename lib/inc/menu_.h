@@ -30,6 +30,8 @@ make_menu = {"name", item1,item2...item N};
 */
 using namespace Containers;
 using namespace Graph;
+//using  base_=Core::base_;
+
 namespace Graph2 {
 
 
@@ -37,6 +39,7 @@ namespace Graph2 {
 
 class menu_:public Empty
 {
+
  std::string header_;
  list2<Core::base_*> l;
 
@@ -46,8 +49,12 @@ class menu_:public Empty
 
  int w_=0,h_=0; // определяет размер виджета : ширина опеределяется самым длинным name_,
                 // высота определяется (количеством base_+(отступы-1)) * размер шрифта
-enum ffont {sym_w=8,sym_h=14,mrg=5}; // пока определим в ручную
- // допустим функция init(), при создании меню устанавливает эти размеры
+enum ffont {sym_w=14,sym_h=12,mrg=5}; // пока определим в ручную
+
+ Graph::Font f_=Graph::Font(Graph::Font::Font_type::times,14);
+Color cl{Color::black};
+
+// допустим функция init(), при создании меню устанавливает эти размеры
  // считывая их из файла??
  // файл открывается в главном окне(типа выбирается тема), и далее каждый виджет
   // инициализируется этой темой
@@ -99,4 +106,4 @@ protected: // + style
 
 }
 
-#endif // MENU__H
+#endif // MENU___H
